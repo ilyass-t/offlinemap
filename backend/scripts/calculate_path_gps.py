@@ -46,8 +46,14 @@ shortest_path = nx.shortest_path(G, source=start_node, target=end_node, weight='
 # Récupérer les coordonnées
 path_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in shortest_path]
 
-m = folium.Map(location=path_coords[len(path_coords)//2], zoom_start=15, tiles=None,
-               scrollWheelZoom=False, zoomControl=False)
+
+
+
+
+# Create map centered on start location
+m = folium.Map(location=path_coords[0], zoom_start=17, tiles=None, scrollWheelZoom=False, zoomControl=False)
+
+
 folium.TileLayer(tiles="http://localhost:8000/{z}/{x}/{y}.png", attr="Offline Tiles", name="Offline Map").add_to(m)
 
 for _, row in edges.iterrows():

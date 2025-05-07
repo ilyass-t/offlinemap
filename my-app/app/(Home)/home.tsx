@@ -4,6 +4,8 @@ import { WebView } from 'react-native-webview';
 import * as Location from 'expo-location';
 import Geolocation from 'react-native-geolocation-service';
 import { PermissionsAndroid, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+
 import {
     View,
     Text,
@@ -51,6 +53,7 @@ const getCurrentLocation = async (): Promise<Coordinates | null> => {
 
 
 export default function DisplayMapScreen() {
+    const router = useRouter();
     const [city, setCity] = useState('');
     const [cityFromParam, setCityFromParam] = useState(false);
     const [showMap, setShowMap] = useState(false);
@@ -159,76 +162,25 @@ export default function DisplayMapScreen() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f9fafb' }}>
           {!showMap ? (
-            <KeyboardAvoidingView
-              behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 16,
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: 'rgba(255,255,255,0.95)',
-                  borderRadius: 20,
-                  padding: 24,
-                  width: '100%',
-                  maxWidth: 400,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.1,
-                  shadowRadius: 6,
-                  elevation: 4,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: '700',
-                    textAlign: 'center',
-                    marginBottom: 24,
-                    color: '#1f2937',
-                  }}
-                >
-                  Affichage de la carte offline
-                </Text>
-      
-                <Text style={{ marginBottom: 8, color: '#374151' }}>Nom de la ville</Text>
-                <TextInput
-                  style={{
-                    borderColor: '#d1d5db',
-                    borderWidth: 1,
-                    borderRadius: 10,
-                    paddingHorizontal: 14,
-                    paddingVertical: 10,
-                    marginBottom: 20,
-                    backgroundColor: '#fff',
-                    color: '#111827',
-                    fontSize: 16,
-                  }}
-                  placeholder="ex: Marrakech"
-                  value={city}
-                  onChangeText={setCity}
-                  placeholderTextColor="#9ca3af"
-                />
-      
-                <TouchableOpacity
-                  onPress={handleShowMap}
-                  style={{
-                    backgroundColor: '#1e40af',
-                    paddingVertical: 12,
-                    borderRadius: 999,
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: '#fff', fontWeight: '600', fontSize: 16 }}>
-                    Afficher la carte
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </KeyboardAvoidingView>
-          ) : (
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 }}>
+                        <Text style={{ fontSize: 18, color: '#1f2937', marginBottom: 20, textAlign: 'center' }}>
+                            Veuillez télécharger une carte.
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => router.push('/(Home)/importMap')}
+                            style={{
+                                backgroundColor: '#1e40af',
+                                paddingVertical: 12,
+                                paddingHorizontal: 20,
+                                borderRadius: 999,
+                            }}
+                        >
+                            <Text style={{ color: '#fff', fontWeight: '600', fontSize: 16 }}>
+                                Aller à l'importation
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : (
             <View style={{ flex: 1 }}>
               {Platform.OS === 'web' ? (
                 <iframe

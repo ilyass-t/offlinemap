@@ -10,6 +10,8 @@ import shortestPathRoutes from "./routes/shortestPathRoutes.js";
 import cors from "cors"; //
 import pathRouter from "./routes/pathRouter.js";
 import listofcities from "./routes/listofcities.js";
+import availableMaps from "./routes/availableMaps.js";
+
 
 const app = express();
 
@@ -26,6 +28,7 @@ app.use("/api", htmlRoutes);
 app.use("/api", shortestPathRoutes);
 app.use("/api", pathRouter);
 app.use("/api", listofcities);
+app.use("/api", availableMaps);
 app.listen(port, () => {
     console.log(`🚀 Server is running on port ${port}`);
     connectDB();
