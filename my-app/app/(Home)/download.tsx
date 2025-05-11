@@ -6,6 +6,7 @@ import {
   Alert,
   useWindowDimensions,
   TouchableOpacity,
+  
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -20,9 +21,14 @@ export default function Page() {
   const isWide = width > 600;
   const [places, setPlaces] = useState<Place[]>([]);
   const router = useRouter();
+  const [deletingCity, setDeletingCity] = useState<string | null>(null);
+
 
   useEffect(() => {
-    const fetchPlaces = async () => {
+    
+    fetchPlaces();
+  }, []);
+  const fetchPlaces = async () => {
       try {
         const res = await fetch('http://localhost:3000/api/cities');
         if (!res.ok) throw new Error('Erreur lors de la récupération des maps');
@@ -33,8 +39,27 @@ export default function Page() {
         Alert.alert('Erreur', 'Impossible de récupérer la liste des maps.');
       }
     };
-    fetchPlaces();
-  }, []);
+  
+  
+  const handleDelete = async (city: string) => {
+    setDeletingCity(city);
+    try {
+      const response = await fetch(`http://localhost:3000/api/delete-map/${city}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Success', `Deleted: ${result.deletedFiles.join(', ')}`);
+        await fetchPlaces();
+      } else {
+        Alert.alert('Error', result.message);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not delete files');
+    }
+    };
 
   const handleUseMap = (place: Place) => {
     router.push({
@@ -63,14 +88,26 @@ export default function Page() {
               <Text className="text-lg font-semibold mb-4 text-gray-800 text-center capitalize">
                 {place.city}{place.country ? `, ${place.country}` : ''}
               </Text>
-              <View className="px-4">
-              <TouchableOpacity
-                className="bg-blue-800 py-2 rounded-full"
-                onPress={() => handleUseMap(place)}
-              >
-                <Text className="text-white text-center font-medium">Utiliser cette carte</Text>
-              </TouchableOpacity>
+              <View className="px-4 space-y-2">
+                <TouchableOpacity
+                  className="bg-blue-800 py-2 rounded-full"
+                  onPress={() => handleUseMap(place)}
+                >
+                  <Text className="text-white text-center font-medium">
+                    Utiliser cette carte
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  className="bg-red-800 py-2 rounded-full"
+                  onPress={() => handleDelete(place.city)}
+                >
+                  <Text className="text-white text-center font-medium">
+                    {deletingCity === place.city ? 'Start deleting...' : 'Supprimer cette carte'}
+                  </Text>
+                </TouchableOpacity>
               </View>
+
             </View>
           ))}
         </View>
