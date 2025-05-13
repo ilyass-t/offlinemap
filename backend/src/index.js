@@ -11,7 +11,8 @@ import cors from "cors"; //
 import pathRouter from "./routes/pathRouter.js";
 import listofcities from "./routes/listofcities.js";
 import availableMaps from "./routes/availableMaps.js";
-
+import traffic from "./routes/traffic.js";
+import ChatBotRoutes from "./routes/ChatBotRoutes.js";
 import deleteMapFiles from './routes/deleteMapFiles.js';
 
 const app = express();
@@ -31,6 +32,8 @@ app.use("/api", pathRouter);
 app.use("/api", listofcities);
 app.use("/api", availableMaps);
 app.use('/api/delete-map', deleteMapFiles);
+app.use("/api", traffic);
+app.use("/api", ChatBotRoutes);
 app.listen(port, () => {
     console.log(`🚀 Server is running on port ${port}`);
     connectDB();

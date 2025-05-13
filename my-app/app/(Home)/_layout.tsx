@@ -24,6 +24,16 @@ const DrawerLayout = () => {
           }}
         />
         <Drawer.Screen
+              name="declareTraffic"
+              options={{
+                  drawerLabel: "Declare Traffic",
+                  headerTitle: "Declare Traffic",
+                  drawerIcon: ({ size, color }) => (
+                      <Ionicons name="car-outline" size={size} color={color} />
+                  ),
+              }}
+          />
+        <Drawer.Screen
           name="download"
           options={{
             drawerLabel: "Downloaded Maps",
