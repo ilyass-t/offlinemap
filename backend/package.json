@@ -21,7 +21,7 @@
     "i": "^0.3.7",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.15.0",
-    "mongoose": "^8.13.2",
+    "mongoose": "^8.14.0",
     "node-fetch": "^3.3.2",
     "node-geocode": "^0.2.0",
     "scikit-learn": "^0.1.0"
